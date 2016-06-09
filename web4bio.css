@@ -2,13 +2,20 @@
     Overflow: hidden;
 }
 
+.headerarea {
+    height: 200px;
+    width: 100%;
+}
+
+.headerarea > .htitle {
+    height: 200px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: xx-large;
+}
+
 .headerimg {
     float: left;
     margin: 0px 25px 0px 0px;
 }
 
-.htitle {
-    text-align: center;
-    vertical-align: middle;
-    font-size: xx-large;
-}

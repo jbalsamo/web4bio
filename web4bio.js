@@ -1,19 +1,24 @@
+var url = "https://data.cdc.gov/resource/kgax-qmh9.json?$where=location_1%20IS%20NOT%20NULL",
+    cities = [],
+    plat = [],
+    plng = [],
+    psize = [];
+
 var data = [{
     type: 'scattergeo',
     locationmode: 'USA-states',
-    lat: [42.35866170200046,40.71455065700047],
-    lon: [-71.05673887699965,-74.00711891899965],
+    lat: [],
+    lon: [],
     hoverinfo: 'text',
-    text: ["Boston, MA", "New York City, NY"],
+    text: [],
     marker: {
-        size: [15, 50],
+        size: [],
         line: {
             color: 'black',
             width: 2
         },
     }
 }];
-
 
 var layout = {
     title: '2014 Deaths in 122 US Cities',
@@ -33,5 +38,41 @@ var layout = {
 };
 
 $(document).ready(function(){
-    Plotly.plot("maparea", data, layout, {showLink: false});
+    jQuery.getJSON(url,function (data,suc) {
+        data.map(function (row) {
+            name = row.location_1_city;
+            lon = parseFloat(row.location_1.coordinates[0]);
+            lat = parseFloat(row.location_1.coordinates[1]);
+            if(row.all_causes_by_age_years_all_ages != "-" && row.all_causes_by_age_years_all_ages != "U" && typeof row.all_causes_by_age_years_all_ages != "undefined") {
+                deaths = parseInt(row.all_causes_by_age_years_all_ages);
+            } else {
+                deaths = 0;
+            }
+            console.log(typeof(deaths));
+
+            plng[name] = lon;
+            plat[name] = lat;
+            cities[name] = name;
+            if(psize[name] != null) {
+
+                psize[name] = psize[name]+deaths;
+            } else {
+                psize[name] = deaths;
+            }
+        });
+        data[0].text = cities;
+        data[0].lat = plat;
+        data[0].lon = plng;
+        data[0].marker.size = psize;
+
+
+        Plotly.plot("maparea", data, layout, {showLink: false});
+
+    });
+
+
+
+
+
+
 });
