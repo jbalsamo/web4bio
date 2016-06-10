@@ -51,32 +51,29 @@ $(document).ready(function(){
         // data[0].marker.size = psize;
         var nhsize = [];
 
-        console.log(psize);
-
-        psize.map(function(deaths){
-            console.log(deaths);
-            nhsize.push(deaths);
-        });
-
-        console.log(nhsize);
-
         var data = [{
             type: 'scattergeo',
             locationmode: 'USA-states',
-            lat: plat,
-            lon: plng,
+            lat: Object.keys(plat).map(function (k) {
+                return plat[k]
+            }),
+            lon: Object.keys(plng).map(function (k) {
+                return plng[k]
+            }),
             hoverinfo: 'text',
-            text: cities,
+            text: Object.getOwnPropertyNames(cities).slice(1),
             marker: {
-                size: [50,37,12,1,25,67,2,4,56,2,34,34],
+                size: Object.keys(psize).map(function (k) {
+                    return parseInt(psize[k] / 100)
+                }),
                 line: {
                     color: 'black',
                     width: 2
                 },
             }
         }];
+        console.log("DATA: ");
         console.log(data);
-        console.log(data[0].marker.size["Akron, OH"]);
 
         Plotly.plot("maparea", data, layout, {showLink: false});
 
