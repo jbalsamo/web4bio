@@ -4,21 +4,6 @@ var url = "https://data.cdc.gov/resource/kgax-qmh9.json?$where=location_1%20IS%2
     plng = [],
     psize = [];
 
-var data = [{
-    type: 'scattergeo',
-    locationmode: 'USA-states',
-    lat: [],
-    lon: [],
-    hoverinfo: 'text',
-    text: [],
-    marker: {
-        size: [],
-        line: {
-            color: 'black',
-            width: 2
-        },
-    }
-}];
 
 var layout = {
     title: '2014 Deaths in 122 US Cities',
@@ -48,23 +33,50 @@ $(document).ready(function(){
             } else {
                 deaths = 0;
             }
-            console.log(typeof(deaths));
+            console.log(lon.length);
 
             plng[name] = lon;
             plat[name] = lat;
             cities[name] = name;
             if(psize[name] != null) {
-
-                psize[name] = psize[name]+deaths;
+                psize[name] = psize[name] + deaths;
             } else {
                 psize[name] = deaths;
             }
         });
-        data[0].text = cities;
-        data[0].lat = plat;
-        data[0].lon = plng;
-        data[0].marker.size = psize;
+        // console.log(psize);
+        // data[0].text = cities;
+        // data[0].lat = plat;
+        // data[0].lon = plng;
+        // data[0].marker.size = psize;
+        var nhsize = [];
 
+        console.log(psize);
+
+        psize.map(function(deaths){
+            console.log(deaths);
+            nhsize.push(deaths);
+        });
+
+        console.log(nhsize);
+
+        var data = [{
+            type: 'scattergeo',
+            locationmode: 'USA-states',
+            lat: plat,
+            lon: plng,
+            hoverinfo: 'text',
+            text: cities,
+            marker: {
+                size: [50,37,12,1,25,67,2,4,56,2,34,34],
+                line: {
+                    color: 'black',
+                    width: 2
+                },
+            }
+        }];
+        console.log(data);
+        console.log(data[0].marker.size["Akron, OH"]);
 
         Plotly.plot("maparea", data, layout, {showLink: false});
 
